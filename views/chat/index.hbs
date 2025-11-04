@@ -1,0 +1,37 @@
+{{!< layouts/main}}
+<h2>Chat en tiempo real</h2>
+<div id="chat" class="card">
+  <div id="messages" class="messages"></div>
+  <form id="form" class="chat-form">
+    <input id="input" autocomplete="off" placeholder="Escribe un mensaje..." />
+    <button>Enviar</button>
+  </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  const messages = document.getElementById('messages');
+  const form = document.getElementById('form');
+  const input = document.getElementById('input');
+
+  function addMessage(text, cls='') {
+    const p = document.createElement('p');
+    p.textContent = text;
+    if (cls) p.classList.add(cls);
+    messages.appendChild(p);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  socket.on('connect', () => addMessage('🟢 Conectado al chat', 'muted'));
+  socket.on('chat:system', (txt) => addMessage('⚙️ ' + txt, 'muted'));
+  socket.on('chat:message', (payload) => addMessage('👤 ' + payload.from + ': ' + payload.text));
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value.trim()) {
+      socket.emit('chat:message', input.value.trim());
+      input.value = '';
+    }
+  });
+</script>

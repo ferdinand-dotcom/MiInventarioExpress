@@ -1,0 +1,51 @@
+{{!< layouts/main}}
+
+<h2>Productos</h2>
+
+<a class="btn btn-primary" href="/productos/nuevo">+ Nuevo producto</a>
+
+{{!-- Mostrar errores de validación --}}
+{{#if errors}}
+  <div class="alert alert-danger" style="margin-bottom:1rem;">
+    <ul>
+      {{#each errors}}
+        <li>{{this.msg}}</li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}
+
+<table class="table table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Imagen</th>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Descripción</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each productos}}
+      <tr>
+        <td>
+          {{#if imagen}}
+            <img src="{{imagen}}" alt="{{nombre}}" width="60" />
+          {{else}}
+            <span>Sin imagen</span>
+          {{/if}}
+        </td>
+        <td>{{nombre}}</td>
+        <td>${{precio}}</td>
+        <td>{{descripcion}}</td>
+        <td>
+          <a href="/productos/{{_id}}/editar" class="btn btn-sm btn-warning">Editar</a>
+          <form action="/productos/{{_id}}/eliminar" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este producto?');">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
