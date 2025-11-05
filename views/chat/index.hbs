@@ -1,37 +1,106 @@
-{{!< layouts/main}}
-<h2>Chat en tiempo real</h2>
-<div id="chat" class="card">
-  <div id="messages" class="messages"></div>
-  <form id="form" class="chat-form">
-    <input id="input" autocomplete="off" placeholder="Escribe un mensaje..." />
-    <button>Enviar</button>
-  </form>
+<h2 class="mb-4 fw-semibold">Chat en tiempo real</h2>
+
+<div class="row justify-content-center">
+  <div class="col-lg-6 col-md-8">
+    <div class="card shadow-sm border-0">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <div>
+          <span class="badge bg-success me-2" id="chat-status">Conectado</span>
+          <strong>{{#if user}}{{user.username}}{{else}}admin{{/if}}</strong> en sala de admins
+        </div>
+        <small class="text-muted">MiInventarioExpress</small>
+      </div>
+
+      <div class="card-body" style="height: 320px; overflow-y: auto;" id="chat-messages">
+        <div class="text-muted small mb-2">
+          Te has unido al chat.
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <form id="chat-form" class="d-flex gap-2">
+          <input
+            type="text"
+            id="chat-input"
+            class="form-control"
+            placeholder="Escribe un mensaje..."
+            autocomplete="off"
+            required
+          >
+          <button class="btn btn-primary" type="submit">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
+
+<p class="text-center mt-4 text-muted small">UPS · Aplicaciones Web ·</p>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io();
-  const messages = document.getElementById('messages');
-  const form = document.getElementById('form');
-  const input = document.getElementById('input');
+  const username = "{{#if user}}{{user.username}}{{else}}admin{{/if}}";
 
-  function addMessage(text, cls='') {
-    const p = document.createElement('p');
-    p.textContent = text;
-    if (cls) p.classList.add(cls);
-    messages.appendChild(p);
-    messages.scrollTop = messages.scrollHeight;
-  }
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-input');
+  const messagesBox = document.getElementById('chat-messages');
 
-  socket.on('connect', () => addMessage('🟢 Conectado al chat', 'muted'));
-  socket.on('chat:system', (txt) => addMessage('⚙️ ' + txt, 'muted'));
-  socket.on('chat:message', (payload) => addMessage('👤 ' + payload.from + ': ' + payload.text));
-
+  // enviar como STRING
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (input.value.trim()) {
-      socket.emit('chat:message', input.value.trim());
-      input.value = '';
-    }
+    const text = input.value.trim();
+    if (!text) return;
+    socket.emit('chat:message', text);
+    input.value = '';
   });
+
+  // mensajes del sistema
+  socket.on('chat:system', (msg) => {
+    const p = document.createElement('p');
+    p.classList.add('text-muted', 'small', 'mb-1');
+    p.textContent = msg;
+    messagesBox.appendChild(p);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  });
+
+  // mensajes normales
+  socket.on('chat:message', (data) => {
+    addMessage(data.from, data.text, data.at);
+  });
+
+  function addMessage(from, text, at) {
+    const wrapper = document.createElement('div');
+    const mine = from === username;
+    wrapper.classList.add('mb-2', 'd-flex', mine ? 'justify-content-end' : 'justify-content-start');
+
+    const bubble = document.createElement('div');
+    bubble.classList.add('px-3', 'py-2', 'rounded-3');
+    bubble.style.maxWidth = '80%';
+
+    // formatear hora en el cliente (por si viene en ISO)
+    let hora = '';
+    if (at) {
+      try {
+        hora = new Date(at).toLocaleTimeString();
+      } catch (e) {
+        hora = at; // si no se puede convertir, mostramos lo que vino
+      }
+    }
+
+    if (mine) {
+      bubble.classList.add('bg-primary', 'text-white');
+    } else {
+      bubble.classList.add('bg-light', 'text-dark', 'border');
+    }
+
+    bubble.innerHTML = `
+      <strong>${from}</strong>: ${text}
+      <br>
+      <span class="text-muted small">${hora}</span>
+    `;
+
+    wrapper.appendChild(bubble);
+    messagesBox.appendChild(wrapper);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  }
 </script>

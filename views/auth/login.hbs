@@ -1,24 +1,55 @@
-{{!< layouts/main}}
-<h2>Iniciar sesión</h2>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5 col-lg-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h3 class="mb-3 fw-semibold text-center">Iniciar sesión</h3>
+        <p class="text-muted text-center mb-4">MiInventarioExpress</p>
 
-{{#if errors}}
-  <div class="alert">
-    <ul>
-      {{#each errors}}
-        <li>{{this.msg}}</li>
-      {{/each}}
-    </ul>
+        {{!-- Mostrar errores --}}
+        {{#if errors}}
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              {{#each errors}}
+                <li>{{this.msg}}</li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+
+        <form action="/login" method="POST" novalidate>
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="form-control"
+              value="{{old.username}}"
+              required
+              autofocus
+            >
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="text-center mt-4 small text-muted">
+      Usuario de prueba: <strong>admin</strong> / Contraseña: <strong>admin123</strong>
+    </div>
+
+    <p class="text-center mt-3 text-muted small">UPS · Aplicaciones Web</p>
   </div>
-{{/if}}
-
-<form action="/login" method="POST" class="card">
-  <label>Usuario
-    <input type="text" name="username" value="{{old.username}}">
-  </label>
-  <label>Contraseña
-    <input type="password" name="password">
-  </label>
-  <button type="submit">Ingresar</button>
-</form>
-
-<p><em>Usuario semilla:</em> <strong>admin</strong> / <strong>admin123</strong></p>
+</div>

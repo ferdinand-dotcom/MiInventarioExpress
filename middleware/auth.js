@@ -1,6 +1,9 @@
-function ensureAuth(req, res, next) {
-  if (req.session && req.session.user) return next();
+function isAuthenticated(req, res, next) {
+  if (req.session && req.session.user) {
+    return next();
+  }
   return res.redirect('/login');
 }
 
-module.exports = { ensureAuth };
+module.exports = { isAuthenticated };
+

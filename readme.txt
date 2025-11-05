@@ -1,1 +1,2 @@
-URL del repositorio GitHub: https://github.com/tuusuario/MiInventarioExpress
+URL del repositorio GitHub: https://github.com/ferdinand-dotcom/MiInventarioExpress
+

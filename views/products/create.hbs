@@ -1,28 +1,82 @@
-{{!< layouts/main}}
-<h2>Nuevo producto</h2>
+<h2 class="mb-4 fw-semibold">Nuevo producto</h2>
 
-{{#if errors}}
-  <div class="alert">
-    <ul>
-      {{#each errors}}
-        <li>{{this.msg}}</li>
-      {{/each}}
-    </ul>
+<div class="row justify-content-center">
+  <div class="col-lg-6 col-md-8">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        {{!-- Mensajes de error --}}
+        {{#if errors}}
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              {{#each errors}}
+                <li>{{this.msg}}</li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+
+        <form action="/productos" method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              class="form-control"
+              value="{{#if old}}{{old.nombre}}{{/if}}"
+              required
+            >
+          </div>
+
+          <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                id="precio"
+                name="precio"
+                class="form-control"
+                value="{{#if old}}{{old.precio}}{{/if}}"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              class="form-control"
+              rows="3"
+              maxlength="500"
+            >{{#if old}}{{old.descripcion}}{{/if}}</textarea>
+            <small class="text-muted">Máx. 500 caracteres.</small>
+          </div>
+
+          <div class="mb-4">
+            <label for="imagen" class="form-label">Imagen del producto</label>
+            <input
+              class="form-control"
+              type="file"
+              id="imagen"
+              name="imagen"
+              accept="image/*"
+            >
+            <small class="text-muted">Formatos permitidos: .jpg, .png, .gif. Máx. 5 MB.</small>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <a href="/productos" class="btn btn-outline-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Guardar producto</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-{{/if}}
+</div>
 
-<form action="/productos" method="POST" enctype="multipart/form-data" class="card">
-  <label>Nombre
-    <input type="text" name="nombre" value="{{old.nombre}}">
-  </label>
-  <label>Precio
-    <input type="number" step="0.01" name="precio" value="{{old.precio}}">
-  </label>
-  <label>Descripción
-    <textarea name="descripcion">{{old.descripcion}}</textarea>
-  </label>
-  <label>Imagen (máx 2MB)
-    <input type="file" name="imagen" accept="image/*">
-  </label>
-  <button type="submit">Guardar</button>
-</form>
+<p class="text-center mt-4 text-muted small">UPS · Aplicaciones Web</p>
