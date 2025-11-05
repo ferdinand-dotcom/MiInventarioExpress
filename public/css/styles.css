@@ -1,16 +1,19 @@
-body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f7f7fb;margin:0}
-a{color:#0a58ca;text-decoration:none}a:hover{text-decoration:underline}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#111;color:#fff}
-.topbar a{color:#fff;margin:0 8px}
-.container{max-width:1000px;margin:24px auto;padding:0 12px}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin-top:12px}
-.btn{display:inline-block;background:#0a58ca;color:#fff;padding:8px 12px;border-radius:6px;margin:8px 0}
-.table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e5e7eb}
-.table th,.table td{border-bottom:1px solid #e5e7eb;padding:8px}
-.alert{background:#fff4e5;border:1px solid #ffd9a3;padding:10px;border-radius:6px}
-.thumb{width:60px;height:60px;object-fit:cover;border:1px solid #ddd;border-radius:6px}
-.chat-form{display:flex;gap:8px;margin-top:8px}
-.chat-form input{flex:1;padding:8px}
-.messages{height:260px;overflow:auto;background:#fafafa;border:1px solid #e5e7eb;border-radius:6px;padding:8px}
-.muted{color:#6b7280;font-size:.9em}
-footer.footer{padding:24px;text-align:center;color:#6b7280}
+body {
+  background: #f5f6fa;
+}
+
+.card {
+  border-radius: 0.75rem;
+}
+
+.navbar-brand {
+  letter-spacing: 0.03em;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+footer {
+  margin-top: 2rem;
+}

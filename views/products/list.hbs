@@ -1,13 +1,17 @@
 {{!< layouts/main}}
 
-<h2>Productos</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Productos</h2>
+  <a class="btn btn-primary" href="/productos/nuevo">
+    + Nuevo producto
+  </a>
+</div>
 
-<a class="btn btn-primary" href="/productos/nuevo">+ Nuevo producto</a>
-
-{{!-- Mostrar errores de validación --}}
+{{!-- Errores de validación --}}
 {{#if errors}}
-  <div class="alert alert-danger" style="margin-bottom:1rem;">
-    <ul>
+  <div class="alert alert-danger">
+    <strong>Ups…</strong> hay problemas con tu formulario:
+    <ul class="mb-0">
       {{#each errors}}
         <li>{{this.msg}}</li>
       {{/each}}
@@ -15,37 +19,45 @@
   </div>
 {{/if}}
 
-<table class="table table-striped mt-3">
-  <thead>
-    <tr>
-      <th>Imagen</th>
-      <th>Nombre</th>
-      <th>Precio</th>
-      <th>Descripción</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    {{#each productos}}
-      <tr>
-        <td>
-          {{#if imagen}}
-            <img src="{{imagen}}" alt="{{nombre}}" width="60" />
-          {{else}}
-            <span>Sin imagen</span>
-          {{/if}}
-        </td>
-        <td>{{nombre}}</td>
-        <td>${{precio}}</td>
-        <td>{{descripcion}}</td>
-        <td>
-          <a href="/productos/{{_id}}/editar" class="btn btn-sm btn-warning">Editar</a>
-          <form action="/productos/{{_id}}/eliminar" method="POST" style="display:inline;">
-            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este producto?');">Eliminar</button>
-          </form>
-        </td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 90px;">Imagen</th>
+            <th>Nombre</th>
+            <th style="width: 120px;">Precio</th>
+            <th>Descripción</th>
+            <th style="width: 160px;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each productos}}
+            <tr>
+              <td>
+                {{#if imagen}}
+                  <img src="{{imagen}}" alt="{{nombre}}" class="img-thumbnail" style="width:70px; height:70px; object-fit:cover;">
+                {{else}}
+                  <span class="badge bg-secondary">Sin imagen</span>
+                {{/if}}
+              </td>
+              <td class="fw-semibold">{{nombre}}</td>
+              <td>$ {{precio}}</td>
+              <td>{{descripcion}}</td>
+              <td>
+                <a href="/productos/{{_id}}/editar" class="btn btn-sm btn-outline-warning">Editar</a>
+                <form action="/productos/{{_id}}/eliminar" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar este producto?');">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    {{#unless productos.length}}
+      <p class="text-muted mb-0">No hay productos registrados todavía.</p>
+    {{/unless}}
+  </div>
+</div>
