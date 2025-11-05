@@ -18,7 +18,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-// --- Conexión a BD ---
+// --- Coneción a BD ---
 connectDB();
 
 // --- Handlebars ---
@@ -51,7 +51,7 @@ const sessionMiddleware = session({
   cookie: {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 8, // 8 horas
-    secure: false, // pon true si usas HTTPS detrás de proxy
+    secure: false,
   },
 });
 app.use(sessionMiddleware);

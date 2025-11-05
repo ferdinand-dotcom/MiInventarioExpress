@@ -45,7 +45,6 @@ router.post(
         imagen: req.file ? `/uploads/${req.file.filename}` : '',
       });
 
-      // como en server.js montaste esto en /productos
       res.redirect('/productos');
     } catch (error) {
       console.error('Error al crear producto:', error);
